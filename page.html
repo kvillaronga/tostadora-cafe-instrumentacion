@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tostadora de Café</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .contenedor {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .fondo {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        z-index: 1;
+    }
+
+    input, select, button {
+        position: absolute;
+        z-index: 2;
+        font-size: 1.8vw;
+        border: none;
+        border-radius: 10px;
+        padding-left: 1%;
+    }
+
+    #masaBox {
+        top: 42%;
+        left: 7.75%;
+        width: 32%;
+        height: 5%;
+    }
+
+    #velocidadBox {
+        top: 62%;
+        left: 7.5%;
+        width: 32%;
+        height: 5%;
+    }
+
+    #tostionBox {
+        top: 82%;
+        left: 7.5%;
+        width: 32%;
+        height: 5%;
+    }
+
+    #enviarBtn {
+        top: 65%;
+        left: 61%;
+        width: 32%;
+        height: 8%;
+        background: orange;
+        font-size: 2.2vw;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #enviarBtn:hover {
+        background-color: #cc7a00;
+    }
+</style>
+
+<script>
+// Abre dos pestañas inmediatamente al pulsar el botón → NO las bloquea
+function enviarYRedirigir() {
+
+    let form = document.getElementById("formulario");
+
+    // Construir la URL del ESP32 con los datos
+    let urlESP = form.action +
+                 "?masa=" + document.getElementById("masaBox").value +
+                 "&velocidad=" + document.getElementById("velocidadBox").value +
+                 "&tostion=" + document.getElementById("tostionBox").value;
+
+    // 1️⃣ Abrir página del ESP32 (datos recibidos / inicio de tostión)
+    window.open(urlESP, "_blank");
+
+    window.location.href = "https://thingspeak.mathworks.com/channels/3149308/private_show";
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <img src="FON_CAFE.png" class="fondo">
+
+    <!-- CAMBIA LA IP DEL ESP32 AQUÍ -->
+    <form id="formulario" action="http://10.11.86.67/recibir" method="GET">
+
+        <input type="number" id="masaBox" name="masa" required>
+
+        <select id="velocidadBox" name="velocidad" required>
+            <option value="bajo">Bajo</option>
+            <option value="medio">Medio</option>
+            <option value="alto">Alto</option>
+        </select>
+
+        <select id="tostionBox" name="tostion" required>
+            <option value="claro">Claro</option>
+            <option value="medio">Medio</option>
+            <option value="oscuro">Oscuro</option>
+        </select>
+
+        <button id="enviarBtn" type="button" onclick="enviarYRedirigir()">ENVIAR</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
